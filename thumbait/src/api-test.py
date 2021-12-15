@@ -1,24 +1,19 @@
-import googleapiclient.discovery
+from googleapiclient import discovery
+import json
+
 # API information
 api_service_name = "youtube"
 api_version = "v3"
 # API key
-DEVELOPER_KEY = ""
+DEVELOPER_KEY = "AIzaSyB3ysNIpTKr7U8QWZmcEe9WXlQNOFyUwqM"
 # API client
-youtube = googleapiclient.discovery.build(
-    api_service_name, api_version, developerKey = DEVELOPER_KEY)
+youtube = discovery.build(api_service_name, api_version, developerKey=DEVELOPER_KEY)
 # 'request' variable is the only thing you must change
 # depending on the resource and method you need to use
 # in your query
-request = youtube.search().list(
-        part="id,snippet",
-        type='video',
-        q="batman",
-        videoDuration='short',
-        videoDefinition='high',
-        maxResults=1
-)
+request = youtube.videos().list(part="id,snippet", chart="mostPopular", maxResults=50)
 # Query execution
 response = request.execute()
 # Print the results
-print(response)
+with open("dump.json", "w") as file:
+    json.dump(response["items"], file)
