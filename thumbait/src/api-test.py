@@ -1,11 +1,12 @@
 from googleapiclient import discovery
 import json
 
-# API information
+from Thumbait.env import YOUTUBE_API_KEY
+
 api_service_name = "youtube"
 api_version = "v3"
 # API key
-DEVELOPER_KEY = "AIzaSyB3ysNIpTKr7U8QWZmcEe9WXlQNOFyUwqM"
+DEVELOPER_KEY = YOUTUBE_API_KEY
 # API client
 youtube = discovery.build(api_service_name, api_version, developerKey=DEVELOPER_KEY)
 # 'request' variable is the only thing you must change
