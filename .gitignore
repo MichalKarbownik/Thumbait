@@ -1,3 +1,14 @@
+# Custom
+
+thumbait/models/cc.en.300.bin
+thumbait/models/BaseModel18
+thumbait/data/checkpoints/
+thumbait/data/embeddings/
+thumbait/data/images/
+thumbait/data/merged_data_youtube.csv
+thumbait/all_data.pkl
+thumbait/tensorboard_logs/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
