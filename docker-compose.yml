@@ -1,0 +1,12 @@
+version: "3"
+services:
+  main-server:
+    privileged: true
+    build:
+      context: ./thumbait
+      dockerfile: Dockerfile
+    restart: always
+    env_file:
+      - ./thumbait/.env
+    ports:
+      - 8011:8080
