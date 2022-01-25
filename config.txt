@@ -1,0 +1,57 @@
+### How to config azure service
+
+az network vnet create \
+    --name myVNet \
+    --resource-group f4ce3b39-8da7-3ab2-2bd2-33d6ece33098 \
+    --location eastus \
+    --address-prefix 10.0.0.0/16 \
+    --subnet-name myAGSubnet \
+    --subnet-prefix 10.0.1.0/24
+
+az network vnet subnet create \
+    --name myACISubnet \
+    --resource-group f4ce3b39-8da7-3ab2-2bd2-33d6ece33098 \
+    --vnet-name myVNet   \
+    --address-prefix 10.0.2.0/24
+
+az network public-ip create \
+    --resource-group f4ce3b39-8da7-3ab2-2bd2-33d6ece33098 \
+    --name myAGPublicIPAddress \
+    --allocation-method Static \
+    --sku Standard
+
+
+az network vnet subnet update \
+    --resource-group f4ce3b39-8da7-3ab2-2bd2-33d6ece33098 \
+    --name myACISubnet \
+    --vnet-name myVnet \
+    --delegations 'Microsoft.ContainerInstance/containerGroups'
+
+
+az container create --resource-group f4ce3b39-8da7-3ab2-2bd2-33d6ece33098 --name thumbait -f deploy.yml --vnet myVNet --subnet myACISubnet --dns-name-label thumbait
+
+
+ACI_IP=$(az container show \
+    --name thumbait \
+    --resource-group f4ce3b39-8da7-3ab2-2bd2-33d6ece33098 \
+    --query ipAddress.ip --output tsv)
+
+
+
+az network application-gateway create \
+    --name myAppGateway \
+    --location eastus \
+    --resource-group f4ce3b39-8da7-3ab2-2bd2-33d6ece33098 \
+    --capacity 2 \
+    --sku Standard_v2 \
+    --http-settings-protocol http \
+    --public-ip-address myAGPublicIPAddress \
+    --vnet-name myVNet \
+    --subnet myAGSubnet \
+    --servers "$ACI_IP"
+
+az network public-ip show \
+    --resource-group f4ce3b39-8da7-3ab2-2bd2-33d6ece33098 \
+    --name myAGPublicIPAddress \
+    --query [ipAddress] \
+    --output tsv
