@@ -9,10 +9,41 @@ from logger import get_logger
 logger = get_logger(__name__)
 WITH_IMG = 640
 
+footer = """<style>
+a:link , a:visited{
+color: gray;
+background-color: transparent;
+text-decoration: underline;
+}
+
+a:hover,  a:active {
+color: red;
+background-color: transparent;
+text-decoration: underline;
+}
+
+.footer {
+position: fixed;
+left: 0;
+bottom: 0;
+width: 100%;
+color: gray;
+text-align: center;
+}
+</style>
+<div class="footer">
+<a style='display: block; text-align: center;' href="https://github.com/Raziel090" target="_blank">Michał Matusz</a>
+<a style='display: block; text-align: center;' href="https://github.com/MichalKarbownik" target="_blank">Michał Karbownik</a>
+<a style='display: block; text-align: center;' href="https://github.com/pszelew" target="_blank">Patryk Szelewski</a>
+<br>
+<p><a style='display: block; text-align: center;' href="https://github.com/MichalKarbownik/Thumbait" target="_blank">Project on GitHub</a></p>
+</div>
+"""
+
 
 class SentimentApp:
-    # def __init__(self, base_url="http://main-server:8080/predict"):
-    def __init__(self, base_url="http://localhost:8080/predict"):
+    def __init__(self, base_url="http://main-server:8080/predict"):
+        # def __init__(self, base_url="http://localhost:8080/predict"):
         self.base_url = base_url
 
     def __call__(self) -> None:
@@ -49,7 +80,7 @@ class SentimentApp:
                 else:
                     image_views = f"img/less/{random.choice(os.listdir(os.path.join('img/less')))}"
                     streamlit.markdown(
-                        f"We think that it should have **{view_count - view_count_pred}** less views."
+                        f"We think that it should have **{view_count - view_count_pred:,}** less views."
                     )
                     streamlit.markdown("Maybe thumbnail is not everything?")
                     streamlit.markdown(
@@ -74,6 +105,21 @@ class SentimentApp:
                     streamlit.markdown("It doesn't look like a typical trending video")
 
                 streamlit.image(image_trend, width=WITH_IMG)
+
+            streamlit.markdown(
+                "**Authors**<br>"
+                "[Michał Matusz](https://github.com/Raziel090)<br>"
+                "[Michał Karbownik](https://github.com/MichalKarbownik)<br>"
+                "[Patryk Szelewski](https://github.com/pszelew/)",
+                unsafe_allow_html=True,
+            )
+
+            streamlit.markdown(
+                "Source code<br>"
+                "[Project on GitHub](https://github.com/MichalKarbownik/Thumbait)",
+                unsafe_allow_html=True,
+            )
+            # streamlit.markdown(footer, unsafe_allow_html=True)
 
 
 if __name__ == "__main__":
