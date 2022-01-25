@@ -1,7 +1,7 @@
 
 <img src="./thumbait_frontend/img/static/YouBait.png" style="width:640px">
 
-# Thumbait - is our project a bait?
+# Thumbait - is this project a bait?
 
 The aim of this project was to build a multimodal model, accepting images and text, that predicts whether a video appears in the Trending category on Youtube.
 
