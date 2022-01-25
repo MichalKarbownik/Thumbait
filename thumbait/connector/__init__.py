@@ -1,3 +1,4 @@
+import os
 import shutil
 from PIL import Image
 from PIL.ImageFile import ImageFile
@@ -45,6 +46,7 @@ class ConnectorYouTube:
         with open(path, "wb") as out_file:
             shutil.copyfileobj(response.raw, out_file)
         image = Image.open(path)
+        os.remove(path)
         return image
 
     def get_statistics(self, v: str) -> tuple[str, int]:

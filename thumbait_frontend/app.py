@@ -42,13 +42,13 @@ text-align: center;
 
 
 class SentimentApp:
-    def __init__(self, base_url="http://main-server:8080/predict"):
-        # def __init__(self, base_url="http://localhost:8080/predict"):
+    # def __init__(self, base_url="http://main-server:8080/predict"):
+    def __init__(self, base_url="http://localhost:8080/predict"):
         self.base_url = base_url
 
     def __call__(self) -> None:
         streamlit.image("img/static/YouBait.png", width=WITH_IMG // 2)
-        streamlit.title("Thumbait - is our project a bait?")
+        streamlit.title("Thumbait - is this project a bait?")
         # Using the "with" syntax
         with streamlit.form(key="my_form"):
             streamlit.text("Is this video a clickbait?")
@@ -78,6 +78,7 @@ class SentimentApp:
                         "Not a lot of views. It has a really nice thumbnail, though."
                     )
                 else:
+                    os.listdir(os.path.join("img/less"))
                     image_views = f"img/less/{random.choice(os.listdir(os.path.join('img/less')))}"
                     streamlit.markdown(
                         f"We think that it should have **{view_count - view_count_pred:,}** less views."
