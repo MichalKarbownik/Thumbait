@@ -8,13 +8,19 @@ import uvicorn  # type: ignore
 from config.app import app
 from logger import get_logger
 from config import models
-from config.globals import MODEL_URL, MODEL_TYPE
+from config.globals import MODEL_PATH, MODEL_PATH_TRENDS, MODEL_TYPE, MODEL_TYPE_TRENDS
 from manager import ThumbaitManager
 
 logger = get_logger(__name__)
 
 
-manager = ThumbaitManager(MODEL_URL, MODEL_TYPE)
+manager = ThumbaitManager(
+    model_path=MODEL_PATH,
+    model_arch=MODEL_TYPE,
+    _type="light",
+    model_path_trends=MODEL_PATH_TRENDS,
+    model_arch_trends=MODEL_TYPE_TRENDS,
+)
 
 
 @app.get("/", response_model=models.Status)
@@ -27,7 +33,24 @@ def check_server() -> JSONResponse:
 @app.get("/predict", response_model=models.Songs)
 def get_data_song_raw(v: str) -> JSONResponse:
     """
-    Predicts number of views for a video
+    Predicts video number of Views
+
+    Parameters
+    --------------------------------
+    v : str
+        youtube video id or youtube link
+
+    Returns
+    --------------------------------
+
+    dict: {
+        "link": str,
+        "view_count": int,
+        "view_count_pred": float,
+        "raw_output_view": float
+        "output_trend": float
+    }
+
     """
     response = manager.predict(v)
     return JSONResponse(jsonable_encoder(response), 200)

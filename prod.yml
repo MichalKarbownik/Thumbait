@@ -1,0 +1,8 @@
+version: "3"
+services:
+  main-server:
+  ports:
+    - 8011:8080
+  streamlit-app:
+    ports: 
+      - 8010:5000

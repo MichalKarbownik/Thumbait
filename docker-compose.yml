@@ -9,4 +9,11 @@ services:
     env_file:
       - ./thumbait/.env
     ports:
-      - 8011:8080
+      - 8080:8080
+  streamlit-app:
+    build:
+      context: ./thumbait_frontend
+      dockerfile: Dockerfile
+    restart: always
+    ports: 
+      - 5000:5000
