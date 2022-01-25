@@ -1,5 +1,6 @@
 import re
 from typing import Union
+import pickle
 
 import torch
 import fasttext
@@ -14,10 +15,21 @@ logger = get_logger(__name__)
 
 
 class TextPreprocessor:
-    def __init__(self, fasttext_path="models/cc.en.300.bin"):
-        self.model = fasttext.load_model(fasttext_path)
+    def __init__(
+        self,
+        _type: str = "big",
+        fasttext_path="models/cc.en.300.bin",
+    ):
+        """ """
+        if _type == "big":
+            self.model = fasttext.load_model(fasttext_path)
+        elif _type == "light":
+            with open("data/vectorizer.pckl", "rb") as file:
+                self.vectorizer = pickle.load(file)
+
         self.en_stop = stopwords.words("english")
         self.stemmer = WordNetLemmatizer()
+        self._type = _type
 
     def _preprocess_text(
         self,
@@ -40,6 +52,9 @@ class TextPreprocessor:
 
         # Converting to Lowercase
         document = document.lower()
+
+        if self._type == "light":
+            return document
 
         # Lemmatization
         tokens = document.split()
@@ -65,14 +80,28 @@ class TextPreprocessor:
         """
         Return preprocessed documents
         """
-        tensors = self._pad_collate(
-            [
-                torch.tensor(
-                    np.array(
-                        [self.model[word] for word in self._preprocess_text(document)]
+
+        if self._type == "big":
+            tensors = self._pad_collate(
+                [
+                    torch.tensor(
+                        np.array(
+                            [
+                                self.model[word]
+                                for word in self._preprocess_text(document)
+                            ]
+                        )
                     )
+                    for document in documents
+                ]
+            )
+            return tensors
+
+        elif self._type == "light":
+            return torch.tensor(
+                self.vectorizer.transform(
+                    [self._preprocess_text(document) for document in documents]
                 )
-                for document in documents
-            ]
-        )
-        return tensors
+                .toarray()
+                .astype("float32")
+            )

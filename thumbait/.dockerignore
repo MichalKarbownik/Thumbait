@@ -1,2 +1,9 @@
-images/negative
-images/positive
+data/checkpoints/
+data/embeddings/
+data/images/
+data/merged_data_youtube.csv
+all_data_train.pkl
+all_data_test.pkl
+tensorboard_logs/
+models/cc.en.300.bin
+models/BaseModel18

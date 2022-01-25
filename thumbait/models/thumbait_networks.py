@@ -8,6 +8,55 @@ from logger import get_logger
 logger = get_logger(__name__)
 
 
+class ThumbLight(nn.Module):
+    def __init__(self, kwargs, *args):
+        super(ThumbLight, self).__init__()
+
+        self.num_classes = kwargs.get("num_classes", 1)
+        self.resnet_size = kwargs.get("resnet_size", 512)
+        self.text_input_size = kwargs.get("input_size", 10000)
+        self.hidden_sizes = kwargs.get("hidden_sizes", [256, 64])
+
+        if self.resnet_size == 512:
+            self.resnet = M.resnet18(pretrained=False)
+        elif self.resnet_size == 2048:
+            self.resnet = M.resnet50(pretrained=False)
+
+        self.resnet.fc = torch.nn.Identity()
+
+        self.fc_text = nn.Linear(self.text_input_size, self.hidden_sizes[0])
+
+        self.fc_1 = nn.Linear(
+            self.resnet_size + self.hidden_sizes[0], self.hidden_sizes[0]
+        )  # fully connected 1
+        self.fc_2 = nn.Linear(
+            self.hidden_sizes[0], self.hidden_sizes[1]
+        )  # fully connected 1
+
+        self.fc_3 = nn.Linear(
+            self.hidden_sizes[1], self.num_classes
+        )  # fully connected last layer
+        self.relu = nn.ReLU()
+        self.drop = torch.nn.Dropout(p=0.5, inplace=False)
+
+    def forward(self, text, image):
+        text = self.fc_text(text)
+        # imgs = torch.cat([self.image_data_loader.dataset[img][0].unsqueeze(dim=0) for img in image]).cuda()
+        image = self.resnet(image)
+
+        out = torch.cat((text, image), axis=1)
+
+        out = self.relu(out)
+        out = self.fc_1(out)  # first Dense
+        out = self.drop(out)
+        out = self.relu(out)
+        out = self.fc_2(out)  # first Dense
+        out = self.drop(out)
+        out = self.relu(out)  # relu
+        out = self.fc_3(out)
+        return out
+
+
 class Thumbait18(nn.Module):
     def __init__(
         self,
@@ -28,7 +77,6 @@ class Thumbait18(nn.Module):
         self.num_layers = kwargs.get("num_layers", 2)
         self.image_data_loader = image_data_loader
         self.device = device
-
 
         self.resnet = M.resnet18(pretrained=False)
         self.resnet.fc = torch.nn.Identity()

@@ -1,5 +1,9 @@
 # Custom
 
+thumbait/models/models/
+thumbait/wordcloud.svg
+thumbait/all_data_test.pkl
+thumbait/all_data_train.pkl
 thumbait/models/cc.en.300.bin
 thumbait/models/BaseModel18
 thumbait/data/checkpoints/
@@ -8,6 +12,7 @@ thumbait/data/images/
 thumbait/data/merged_data_youtube.csv
 thumbait/all_data.pkl
 thumbait/tensorboard_logs/
+relicts/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

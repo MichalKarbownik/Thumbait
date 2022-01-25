@@ -1,0 +1,20 @@
+version: "3"
+services:
+  main-server:
+    privileged: true
+    image: pszelew/thumbait-backend:latest
+    restart: always
+    env_file:
+      - ./thumbait/.env
+    ports:
+      - 8080:8080
+    deploy:
+      resources:
+        limits:
+          memory: 8g
+    
+  streamlit-app:
+    image: pszelew/thumbait-frontend:latest
+    restart: always
+    ports: 
+      - 5000:5000
