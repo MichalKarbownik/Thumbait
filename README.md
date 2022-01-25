@@ -13,15 +13,15 @@ docker-compose -p thumbait -f azure.yml up
 
 *azure.yml* uses images shared on Docker Hub:
 
-docker pull thumbait_main-server pszelew/thumbait-backend:latest
-docker pull thumbait_streamlit-app pszelew/thumbait-frontend:latest
-
-
-## Both backed and frontend are available as docker packages
-
-docker pull
+- docker pull thumbait_main-server pszelew/thumbait-backend:latest
+- docker pull pszelew/thumbait-frontend:latest
 
 ## Models
 
 Models trained by us are available on gdrive:
 [Models](https://drive.google.com/drive/folders/19iDtiejsrstW8Zk1qlb_4nRtPlUsFHtm?usp=sharing)
+
+## Authors
+[Michał Matusz](https://github.com/Raziel090)<br>
+[Michał Karbownik](https://github.com/MichalKarbownik)<br>
+[Patryk Szelewski](https://github.com/pszelew/)
