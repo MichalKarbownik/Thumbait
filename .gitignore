@@ -13,6 +13,7 @@ thumbait/data/merged_data_youtube.csv
 thumbait/all_data.pkl
 thumbait/tensorboard_logs/
 relicts/
+config.txt
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
