@@ -1,5 +1,7 @@
 ### How to config azure service
 
+### az group create --name f4ce3b39-8da7-3ab2-2bd2-33d6ece33098 --location eastus
+
 az network vnet create \
     --name myVNet \
     --resource-group f4ce3b39-8da7-3ab2-2bd2-33d6ece33098 \
@@ -15,7 +17,7 @@ az network vnet subnet create \
     --address-prefix 10.0.2.0/24
 
 az network public-ip create \
-    --resource-group f4ce3b39-8da7-3ab2-2bd2-33d6ece33098 \
+    --resource-group f4ce3b39-8da7-3ab2-2bd2-33d6ece33098\
     --name myAGPublicIPAddress \
     --allocation-method Static \
     --sku Standard
@@ -28,7 +30,7 @@ az network vnet subnet update \
     --delegations 'Microsoft.ContainerInstance/containerGroups'
 
 
-az container create --resource-group f4ce3b39-8da7-3ab2-2bd2-33d6ece33098 --name thumbait -f deploy.yml --vnet myVNet --subnet myACISubnet --dns-name-label thumbait
+az container create --resource-group f4ce3b39-8da7-3ab2-2bd2-33d6ece33098 --name thumbait -f deploy.yml
 
 
 ACI_IP=$(az container show \
