@@ -74,7 +74,14 @@ class TextPreprocessor:
         texts_pad = pack_padded_sequence(
             texts_pad, text_lens, batch_first=True, enforce_sorted=False
         )
-        return texts_pad2442596.3483247557
+        return texts_pad
+
+    def preprocess_texts(self, documents: list) -> PackedSequence:
+        """
+        Return preprocessed documents
+        """
+
+        if self._type == "big":
             tensors = self._pad_collate(
                 [
                     torch.tensor(

@@ -78,7 +78,11 @@ class ThumbaitManager(TextPreprocessor, ImagePreprocessor, ConnectorYouTube):
         """
         # get youtube video id
 
-        if re.search(r"http", v):
+        if re.search(r"youtu.be", v):
+            res = re.split(r"/", v)
+            v = res[1]
+
+        elif re.search(r"http", v):
             res = re.split(r"=", v)
             v = re.split("&", res[1])[0]
 

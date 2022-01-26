@@ -90,7 +90,7 @@ class SentimentApp:
 
                 streamlit.image(image_views, width=WITH_IMG)
 
-                streamlit.text(f"Interesing!")
+                streamlit.markdown(f"Interesing!")
 
                 if output_trend == 1:
                     image_trend = f"img/bait/{random.choice(os.listdir(os.path.join('img/bait')))}"
